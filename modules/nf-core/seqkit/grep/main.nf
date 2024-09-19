@@ -13,7 +13,7 @@ process SEQKIT_GREP {
     path pattern
 
     output:
-    tuple val(meta), path("*.{fa,fq}.gz")  , optional:true, emit: filter
+    tuple val(meta), path("*.{fa,fq}.gz")  , emit: filter
     path "versions.yml"                    , emit: versions
 
     when:
@@ -34,8 +34,6 @@ process SEQKIT_GREP {
         ${pattern_file} \\
         ${sequence} \\
         -o ${prefix}.${suffix}.gz \\
-
-    [ -z "\$(zcat ${prefix}.${suffix}.gz | head)" ] && rm ${prefix}.${suffix}.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
