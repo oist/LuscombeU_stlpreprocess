@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
-    "$id": "https://raw.githubusercontent.com/oist/stlpreprocess/master/nextflow_schema.json",
-    "title": "oist/stlpreprocess pipeline parameters",
+    "$id": "https://raw.githubusercontent.com/oist/LuscombeU_stlpreprocess/master/nextflow_schema.json",
+    "title": "oist/LuscombeU_stlpreprocess pipeline parameters",
     "description": "Download and pre-process genomes for the Scrambling in the Tree of Life project",
     "type": "object",
     "definitions": {

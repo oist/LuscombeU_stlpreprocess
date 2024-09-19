@@ -1,4 +1,4 @@
-# oist/stlpreprocess: Citations
+# oist/LuscombeU_stlpreprocess: Citations
 
 ## [nf-core](https://pubmed.ncbi.nlm.nih.gov/32055031/)
 

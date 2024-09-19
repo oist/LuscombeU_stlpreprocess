@@ -17,7 +17,7 @@
                         "size": "Large",
                         "weight": "Bolder",
                         "color": "<% if (success) { %>Good<% } else { %>Attention<%} %>",
-                        "text": "oist/stlpreprocess v${version} - ${runName}",
+                        "text": "oist/LuscombeU_stlpreprocess v${version} - ${runName}",
                         "wrap": true
                     },
                     {

@@ -1,6 +1,6 @@
 {
-    "name": "oist/stlpreprocess",
-    "homePage": "https://github.com/oist/stlpreprocess",
+    "name": "oist/LuscombeU_stlpreprocess",
+    "homePage": "https://github.com/oist/LuscombeU_stlpreprocess",
     "repos": {
         "https://github.com/nf-core/modules.git": {
             "modules": {

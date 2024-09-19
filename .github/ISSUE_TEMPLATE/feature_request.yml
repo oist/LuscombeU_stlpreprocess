@@ -1,5 +1,5 @@
 name: Feature request
-description: Suggest an idea for the oist/stlpreprocess pipeline
+description: Suggest an idea for the oist/LuscombeU_stlpreprocess pipeline
 labels: enhancement
 body:
   - type: textarea
