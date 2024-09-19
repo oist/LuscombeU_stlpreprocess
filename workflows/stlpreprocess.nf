@@ -4,12 +4,14 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { FASTQC                 } from '../modules/nf-core/fastqc/main'
-include { MULTIQC                } from '../modules/nf-core/multiqc/main'
-include { paramsSummaryMap       } from 'plugin/nf-validation'
-include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
-include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
-include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_stlpreprocess_pipeline'
+include { MULTIQC                      } from '../modules/nf-core/multiqc/main'
+include { SEQKIT_GREP as FILTERED      } from '../modules/nf-core/seqkit/grep/main'
+include { SEQKIT_GREP as MITOCHONDRION } from '../modules/nf-core/seqkit/grep/main'
+include { SEQKIT_SEQ as UNMASKED       } from '../modules/nf-core/seqkit/seq/main'
+include { paramsSummaryMap             } from 'plugin/nf-validation'
+include { paramsSummaryMultiqc         } from '../subworkflows/nf-core/utils_nfcore_pipeline'
+include { softwareVersionsToYAML       } from '../subworkflows/nf-core/utils_nfcore_pipeline'
+include { methodsDescriptionText       } from '../subworkflows/local/utils_nfcore_stlpreprocess_pipeline'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -27,14 +29,10 @@ workflow STLPREPROCESS {
     ch_versions = Channel.empty()
     ch_multiqc_files = Channel.empty()
 
-    //
-    // MODULE: Run FastQC
-    //
-    FASTQC (
-        ch_samplesheet
-    )
-    ch_multiqc_files = ch_multiqc_files.mix(FASTQC.out.zip.collect{it[1]})
-    ch_versions = ch_versions.mix(FASTQC.out.versions.first())
+    FILTERED ( ch_samplesheet, [] )
+    MITOCHONDRION ( ch_samplesheet, [] )
+    UNMASKED ( FILTERED.out.filter )
+    ch_versions = ch_versions.mix(FILTERED.out.versions.first())
 
     //
     // Collate and save software versions
