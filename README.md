@@ -2,9 +2,10 @@
 
 **oist/LuscombeU_stlpreprocess** is a bioinformatics pipeline that ...
 
-1. Extract chromosomal scaffolds from the assembly file (discard unplaced and alternate sequences, etc.).
+1. Extract chromosomal scaffolds from the assembly file (discard unplaced, alternate, organelle sequences, etc.).
 2. Unmask the genome (to be re-masked later by another local pipeline.
 3. Extract mitochondrial genomes from the assembly file (they might be useful later as an internal control).
+4. Summarises the occurence of the first two letters of the accession numbers, to ease future changes of the grepping pattern for whole-chromosome scaffolds.
 
 ## Usage
 
