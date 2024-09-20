@@ -1,3 +1,5 @@
+# Genome download and pre-processing pipeline
+
 ## Introduction
 
 **oist/LuscombeU_stlpreprocess** is a bioinformatics pipeline that ...
@@ -6,6 +8,14 @@
 2. Unmask the genome (to be re-masked later by another local pipeline.
 3. Extract mitochondrial genomes from the assembly file (they might be useful later as an internal control).
 4. Summarises the occurence of the first two letters of the accession numbers, to ease future changes of the grepping pattern for whole-chromosome scaffolds.
+
+## TODO
+
+ - Some assemblies only contain fragmented condigs of the mitochondrial genome.
+   Filter them out.  In `GCA_000146795` they match `Contig` and `>AD` while
+   complete Primate mitogenomes do not (`>CM`, `>CP`, `>J0`, `>KT`, `>LN`).
+
+ - Take TSV as input instead of CSV.  With or without header?
 
 ## Usage
 
