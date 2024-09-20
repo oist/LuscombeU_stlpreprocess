@@ -5,8 +5,8 @@
 */
 
 include { MULTIQC                      } from '../modules/nf-core/multiqc/main'
-include { SEQKIT_GREP as FILTERED      } from '../modules/nf-core/seqkit/grep/main'
-include { SEQKIT_GREP as MITOCHONDRION } from '../modules/nf-core/seqkit/grep/main'
+include { FILTER as FILTERED           } from '../modules/local/filter'
+include { MITOGENOME                   } from '../modules/local/mitogenome'
 include { SEQKIT_SEQ as UNMASKED       } from '../modules/nf-core/seqkit/seq/main'
 include { paramsSummaryMap             } from 'plugin/nf-validation'
 include { paramsSummaryMultiqc         } from '../subworkflows/nf-core/utils_nfcore_pipeline'
@@ -29,9 +29,9 @@ workflow STLPREPROCESS {
     ch_versions = Channel.empty()
     ch_multiqc_files = Channel.empty()
 
-    FILTERED ( ch_samplesheet, [] )
-    MITOCHONDRION ( ch_samplesheet, [] )
-    UNMASKED ( FILTERED.out.filter )
+    FILTERED      ( ch_samplesheet )
+    MITOGENOME    ( ch_samplesheet )
+    UNMASKED      ( FILTERED.out.filter )
     ch_versions = ch_versions.mix(FILTERED.out.versions.first())
 
     //

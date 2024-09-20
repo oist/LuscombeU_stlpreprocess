@@ -1,6 +1,6 @@
-process SEQKIT_GREP {
+process FILTER {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_single'
 
 
     conda "${moduleDir}/environment.yml"
@@ -10,10 +10,10 @@ process SEQKIT_GREP {
 
     input:
     tuple val(meta), path(sequence)
-    path pattern
 
     output:
     tuple val(meta), path("*.{fa,fq}.gz")  , emit: filter
+    tuple val(meta), path("*patterns.txt") , emit: patterns
     path "versions.yml"                    , emit: versions
 
     when:
@@ -24,16 +24,18 @@ process SEQKIT_GREP {
     def prefix = task.ext.prefix ?: "${meta.id}"
     // fasta or fastq. Exact pattern match .fasta or .fa suffix with optional .gz (gzip) suffix
     def suffix = task.ext.suffix ?: "${sequence}" ==~ /(.*f[astn]*a(.gz)?$)/ ? "fa" : "fq"
-    def pattern_file = pattern ? "-f ${pattern}" : ""
 
     """
-    seqkit \\
-        grep \\
-        $args \\
-        --threads $task.cpus \\
-        ${pattern_file} \\
-        ${sequence} \\
+    # Keep only complete chromosomes but remove the mitogenome
+    seqkit grep $args $sequence |
+      seqkit grep -vnr -p 'itochondri' \\
         -o ${prefix}.${suffix}.gz \\
+
+    # Keep a record of 2-letter patterns, so later check if we can expand the grep pattern safely.
+    zcat $sequence | grep '>' | cut -c 2-3 | sort | uniq -c | sort -n > ${prefix}.patterns.txt
+
+    # Crash if output is empty
+    [ -z "\$(zcat ${prefix}.${suffix}.gz | head)" ] && exit 1
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
