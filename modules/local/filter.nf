@@ -28,8 +28,8 @@ process FILTER {
     """
     # Keep only complete chromosomes but remove the mitogenome
     seqkit grep $args $sequence |
-      seqkit grep -vnr -p 'itochondri' \\
-        -o ${prefix}.${suffix}.gz \\
+        seqkit grep -vnr -p 'itochondri' \\
+            -o ${prefix}.${suffix}.gz \\
 
     # Keep a record of 2-letter patterns, so later check if we can expand the grep pattern safely.
     zcat $sequence | grep '>' | cut -c 2-3 | sort | uniq -c | sort -n > ${prefix}.patterns.txt

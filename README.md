@@ -11,11 +11,11 @@
 
 ## TODO
 
- - Some assemblies only contain fragmented condigs of the mitochondrial genome.
-   Filter them out.  In `GCA_000146795` they match `Contig` and `>AD` while
-   complete Primate mitogenomes do not (`>CM`, `>CP`, `>J0`, `>KT`, `>LN`).
+- Some assemblies only contain fragmented condigs of the mitochondrial genome.
+  Filter them out. In `GCA_000146795` they match `Contig` and `>AD` while
+  complete Primate mitogenomes do not (`>CM`, `>CP`, `>J0`, `>KT`, `>LN`).
 
- - Take TSV as input instead of CSV.  With or without header?
+- Take TSV as input instead of CSV. With or without header?
 
 ## Usage
 
@@ -32,7 +32,6 @@ genome1,/path/to/genome/file.fastq.gz
 ```
 
 Now, you can run the pipeline using:
-
 
 ```bash
 nextflow run oist/LuscombeU_stlpreprocess \
@@ -104,4 +103,3 @@ This pipeline uses code and infrastructure developed and maintained by the [nf-c
 - [Singularity](https://pubmed.ncbi.nlm.nih.gov/28494014/)
 
   > Kurtzer GM, Sochat V, Bauer MW. Singularity: Scientific containers for mobility of compute. PLoS One. 2017 May 11;12(5):e0177459. doi: 10.1371/journal.pone.0177459. eCollection 2017. PubMed PMID: 28494014; PubMed Central PMCID: PMC5426675.
-
