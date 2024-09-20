@@ -1,5 +1,5 @@
 //
-// Subworkflow with functionality specific to the oist/stlpreprocess pipeline
+// Subworkflow with functionality specific to the oist/LuscombeU_stlpreprocess pipeline
 //
 
 /*
