@@ -12,7 +12,7 @@ process FILTER {
     tuple val(meta), path(sequence)
 
     output:
-    tuple val(meta), path("*.{fa,fq}.gz")  , emit: filter
+    tuple val(meta), path("*.{fa,fq}.gz")  , emit: filter, optional: true
     tuple val(meta), path("*patterns.txt") , emit: patterns
     path "versions.yml"                    , emit: versions
 
@@ -34,8 +34,8 @@ process FILTER {
     # Keep a record of 2-letter patterns, so later check if we can expand the grep pattern safely.
     zcat $sequence | grep '>' | cut -c 2-3 | sort | uniq -c | sort -n > ${prefix}.patterns.txt
 
-    # Crash if output is empty
-    [ -z "\$(zcat ${prefix}.${suffix}.gz | head)" ] && exit 1
+    # Remove output if empty (for some genomes the pattern does match chromosome-level scaffold accession numbers)
+    [ -z "\$(zcat ${prefix}.${suffix}.gz | head)" ] && rm ${prefix}.${suffix}.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
