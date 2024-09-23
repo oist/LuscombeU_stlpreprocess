@@ -12,9 +12,11 @@
 ## TODO
 
 - Some assemblies only contain fragmented condigs of the mitochondrial genome.
-  Filter them out. In `GCA_000146795` they match `Contig` and `>AD` while
-  complete Primate mitogenomes do not (`>CM`, `>CP`, `>J0`, `>KT`, `>LN`).
-
+  Filter them out.
+   - In `GCA_000146795` they match `Contig` and `>AD` while
+     complete Primate mitogenomes do not (`>CM`, `>CP`, `>J0`, `>KT`, `>LN`).
+   - In `GCA_015711505` they match `HiC_scaffold` and `>JA` while
+     complete Glire mitogenomes do not (`>AA`, `>AY`, `>CM`, `>JA`, `>LR`, `>OR`, `>OW`, `>OX`, `>OY`, `>OZ`).
 - Take TSV as input instead of CSV. With or without header?
 
 ## Usage
