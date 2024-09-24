@@ -17,6 +17,8 @@
      complete Primate mitogenomes do not (`>CM`, `>CP`, `>J0`, `>KT`, `>LN`).
    - In `GCA_015711505` they match `HiC_scaffold` and `>JA` while
      complete Glire mitogenomes do not (`>AA`, `>AY`, `>CM`, `>JA`, `>LR`, `>OR`, `>OW`, `>OX`, `>OY`, `>OZ`).
+   - In `GCA_019903745` they match `>JA`, while no other Artiodactyla does.
+  This said, maybe it will be easier to just delete files that contain more than one sequence?
 
 ## Usage
 
