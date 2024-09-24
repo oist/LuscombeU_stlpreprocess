@@ -17,7 +17,6 @@
      complete Primate mitogenomes do not (`>CM`, `>CP`, `>J0`, `>KT`, `>LN`).
    - In `GCA_015711505` they match `HiC_scaffold` and `>JA` while
      complete Glire mitogenomes do not (`>AA`, `>AY`, `>CM`, `>JA`, `>LR`, `>OR`, `>OW`, `>OX`, `>OY`, `>OZ`).
-- Take TSV as input instead of CSV. With or without header?
 
 ## Usage
 
@@ -26,11 +25,11 @@
 
 First, prepare a samplesheet with your input data that looks as follows:
 
-`samplesheet.csv`:
+`samplesheet.tsv`:
 
-```csv
-sample,fasta
-genome1,/path/to/genome/file.fastq.gz
+```
+id	file
+genome1	/path/to/genome/file.fastq.gz
 ```
 
 Now, you can run the pipeline using:
@@ -38,7 +37,7 @@ Now, you can run the pipeline using:
 ```bash
 nextflow run oist/LuscombeU_stlpreprocess \
    -profile <docker/singularity/.../institute> \
-   --input samplesheet.csv \
+   --input samplesheet.tsv \
    --outdir <OUTDIR>
 ```
 

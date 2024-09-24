@@ -7,13 +7,13 @@
     "items": {
         "type": "object",
         "properties": {
-            "sample": {
+            "id": {
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "Sample name must be provided and cannot contain spaces",
+                "errorMessage": "IDs must be provided and cannot contain spaces",
                 "meta": ["id"]
             },
-            "fasta": {
+            "file": {
                 "type": "string",
                 "format": "file-path",
                 "exists": true,
@@ -21,6 +21,6 @@
                 "errorMessage": "Fasta file for genomes must be provided, cannot contain spaces and must have extension `.fa`, `.fa.gz`, `.fna`, `.fna.gz`, `.fasta` or `.fasta.gz`"
             }
         },
-        "required": ["sample", "fasta"]
+        "required": ["id", "file"]
     }
 }

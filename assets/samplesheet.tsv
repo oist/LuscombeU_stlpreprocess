@@ -1,0 +1,3 @@
+id	file	other
+GRCh38	assets/GRCh38.head.fa.gz	unused column
+mitoch	assets/GRCh38.mito.fa.gz	added for tests

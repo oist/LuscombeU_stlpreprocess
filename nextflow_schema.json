@@ -17,11 +17,10 @@
                     "format": "file-path",
                     "exists": true,
                     "schema": "assets/schema_input.json",
-                    "mimetype": "text/csv",
-                    "pattern": "^\\S+\\.csv$",
-                    "description": "Path to comma-separated file containing information about the samples in the experiment.",
-                    "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row.",
-                    "fa_icon": "fas fa-file-csv"
+                    "mimetype": "text/plain",
+                    "pattern": "^\\S+\\.[ct]sv$",
+                    "description": "Path to tab- or comma-separated file containing information about the genomes to download.",
+                    "help_text": "Create a file with the URLs of the genomes to download. Use this parameter to specify its location. It has to be a tab- or comma-separated file with 2 columns named 'id' and 'file', and a header row."
                 },
                 "outdir": {
                     "type": "string",
