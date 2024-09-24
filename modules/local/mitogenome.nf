@@ -31,8 +31,8 @@ process MITOGENOME {
         ${sequence} \\
         -o ${prefix}.mitogenome.${suffix}.gz \\
 
-    # Remove output if empty
-    [ -z "\$(zcat ${prefix}.mitogenome.${suffix}.gz | head)" ] && rm ${prefix}.mitogenome.${suffix}.gz
+    # Remove if containing less or more than one sequence
+    [ \$(zcat ${prefix}.mitogenome.${suffix}.gz | grep -c '>') -ne 1 ] && rm ${prefix}.mitogenome.${suffix}.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
