@@ -4,7 +4,9 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
+include { ASSEMBLYSCAN                 } from '../modules/nf-core/assemblyscan/main'
 include { MULTIQC                      } from '../modules/nf-core/multiqc/main'
+include { MULTIQC_ASSEMBLYSCAN_PLOT_DATA} from '../modules/local/multiqc_assemblyscan_plot_data'
 include { FILTER as FILTERED           } from '../modules/local/filter'
 include { MITOGENOME                   } from '../modules/local/mitogenome'
 include { SEQKIT_SEQ as UNMASKED       } from '../modules/nf-core/seqkit/seq/main'
@@ -33,6 +35,9 @@ workflow STLPREPROCESS {
     MITOGENOME    ( ch_samplesheet )
     UNMASKED      ( FILTERED.out.filter )
     ch_versions = ch_versions.mix(FILTERED.out.versions.first())
+    ASSEMBLYSCAN  ( FILTERED.out.filter )
+    ch_versions = ch_versions.mix(ASSEMBLYSCAN.out.versions.first())
+    MULTIQC_ASSEMBLYSCAN_PLOT_DATA ( ASSEMBLYSCAN.out.json.collect{it[1]} ) // https://github.com/nf-core/pairgenomealign/blob/dev/modules/local/multiqc_assemblyscan_plot_data.nf
 
     //
     // Collate and save software versions
@@ -69,6 +74,7 @@ workflow STLPREPROCESS {
 
     ch_multiqc_files = ch_multiqc_files.mix(
         ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
+    ch_multiqc_files = ch_multiqc_files.mix(MULTIQC_ASSEMBLYSCAN_PLOT_DATA.out.tsv)
     ch_multiqc_files = ch_multiqc_files.mix(ch_collated_versions)
     ch_multiqc_files = ch_multiqc_files.mix(
         ch_methods_description.collectFile(
