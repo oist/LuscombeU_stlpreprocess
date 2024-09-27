@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## v2.1.0 - September 24th, 2024 (Lama glama)
 
  - Run assemblyscan on the filtered genomes.
+ - Allocate only a single CPU for 1 hour with 6 Gb memory for all computations.
 
 ## v2.0.0 - September 24th, 2024 (Lama glama)
 
