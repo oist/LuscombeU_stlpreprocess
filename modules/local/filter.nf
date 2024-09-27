@@ -14,6 +14,7 @@ process FILTER {
     output:
     tuple val(meta), path("*.{fa,fq}.gz")  , emit: filter, optional: true
     tuple val(meta), path("*patterns.txt") , emit: patterns
+    tuple val(meta), path("*tignames.txt") , emit: contignames
     path "versions.yml"                    , emit: versions
 
     when:
@@ -31,8 +32,10 @@ process FILTER {
         seqkit grep -vnr -p 'itochondri' \\
             -o ${prefix}.${suffix}.gz \\
 
-    # Keep a record of 2-letter patterns, so later check if we can expand the grep pattern safely.
-    zcat $sequence | grep '>' | cut -c 2-3 | sort | uniq -c | sort -n > ${prefix}.patterns.txt
+    # Keep a record of contig names and 2-letter patterns, so later check:
+    # - can expand the grep pattern safely?
+    # - does that assembly has sex chromosomes?
+    zcat $sequence | grep '>' | tee ${prefix}.contignames.txt | cut -c 2-3 | sort | uniq -c | sort -n > ${prefix}.patterns.txt
 
     # Remove output if empty (for some genomes the pattern does match chromosome-level scaffold accession numbers)
     [ -z "\$(zcat ${prefix}.${suffix}.gz | head)" ] && rm ${prefix}.${suffix}.gz
