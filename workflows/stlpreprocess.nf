@@ -8,7 +8,6 @@ include { ASSEMBLYSCAN                 } from '../modules/nf-core/assemblyscan/m
 include { MULTIQC                      } from '../modules/nf-core/multiqc/main'
 include { MULTIQC_ASSEMBLYSCAN_PLOT_DATA} from '../modules/local/multiqc_assemblyscan_plot_data'
 include { FILTER as FILTERED           } from '../modules/local/filter'
-include { MITOGENOME                   } from '../modules/local/mitogenome'
 include { SEQKIT_SEQ as UNMASKED       } from '../modules/nf-core/seqkit/seq/main'
 include { paramsSummaryMap             } from 'plugin/nf-validation'
 include { paramsSummaryMultiqc         } from '../subworkflows/nf-core/utils_nfcore_pipeline'
@@ -32,10 +31,9 @@ workflow STLPREPROCESS {
     ch_multiqc_files = Channel.empty()
 
     FILTERED      ( ch_samplesheet )
-    MITOGENOME    ( ch_samplesheet )
-    UNMASKED      ( FILTERED.out.filter )
+    UNMASKED      ( FILTERED.out.chromosomes )
     ch_versions = ch_versions.mix(FILTERED.out.versions.first())
-    ASSEMBLYSCAN  ( FILTERED.out.filter )
+    ASSEMBLYSCAN  ( FILTERED.out.chromosomes )
     ch_versions = ch_versions.mix(ASSEMBLYSCAN.out.versions.first())
     MULTIQC_ASSEMBLYSCAN_PLOT_DATA ( ASSEMBLYSCAN.out.json.collect{it[1]} ) // https://github.com/nf-core/pairgenomealign/blob/dev/modules/local/multiqc_assemblyscan_plot_data.nf
 

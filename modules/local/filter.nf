@@ -2,20 +2,20 @@ process FILTER {
     tag "$meta.id"
     label 'process_single'
 
-
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/seqkit:2.8.1--h9ee0642_0':
-        'biocontainers/seqkit:2.8.1--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/seqtk:1.4--he4a0461_1' :
+        'biocontainers/seqtk:1.4--he4a0461_1' }"
 
     input:
-    tuple val(meta), path(sequence)
+    tuple val(meta), path(genome)
 
     output:
-    tuple val(meta), path("*.{fa,fq}.gz")  , emit: filter, optional: true
-    tuple val(meta), path("*patterns.txt") , emit: patterns
-    tuple val(meta), path("*tignames.txt") , emit: contignames
-    path "versions.yml"                    , emit: versions
+    tuple val(meta), path("*.chromosomes.fa.gz") , emit: chromosomes, optional: true
+    tuple val(meta), path("*.mitogenome.fa.gz")  , emit: mitogenome, optional: true
+    tuple val(meta), path("*patterns.txt")       , emit: patterns
+    tuple val(meta), path("*contignames.txt")    , emit: contignames
+    path "versions.yml"                          , emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,41 +23,33 @@ process FILTER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // fasta or fastq. Exact pattern match .fasta or .fa suffix with optional .gz (gzip) suffix
-    def suffix = task.ext.suffix ?: "${sequence}" ==~ /(.*f[astn]*a(.gz)?$)/ ? "fa" : "fq"
 
     """
-    # Keep only complete chromosomes but remove the mitogenome
-    seqkit grep $args $sequence |
-        seqkit grep -vnr -p 'itochondri' \\
-            -o ${prefix}.${suffix}.gz \\
-
-    # Keep a record of contig names and 2-letter patterns, so later check:
+    set +o pipefail
+    # Keep a record of contig names and 2-letter patterns, to later check:
     # - can expand the grep pattern safely?
     # - does that assembly has sex chromosomes?
-    zcat $sequence | grep '>' | tee ${prefix}.contignames.txt | cut -c 2-3 | sort | uniq -c | sort -n > ${prefix}.patterns.txt
+    zcat $genome | grep '>' | tee ${prefix}.contignames.txt | cut -c 2-3 | sort | uniq -c | sort -n > ${prefix}.patterns.txt
 
-    # Remove output if empty (for some genomes the pattern does match chromosome-level scaffold accession numbers)
-    [ -z "\$(zcat ${prefix}.${suffix}.gz | head)" ] && rm ${prefix}.${suffix}.gz
+    # Keep only complete chromosomes but remove the mitogenome
+    sed 's/^>//' ${prefix}.contignames.txt |
+        grep -vi mitochondri |
+        awk '{print \$1}' |
+        grep -E "^(CM|CP|FR|L[R-T]|O[U-Z])" | tee ${prefix}.contignames.chromosomes.txt || true
+    seqtk subseq $genome ${prefix}.contignames.chromosomes.txt | gzip --best --no-name > ${prefix}.chromosomes.fa.gz
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqkit: \$( seqkit version | sed 's/seqkit v//' )
-    END_VERSIONS
-    """
+    # And then extract the mitogenome
+    sed 's/^>//' ${prefix}.contignames.txt |
+        grep -i mitochondri |
+        seqtk subseq $genome - | gzip --best --no-name > ${prefix}.mitogenome.fa.gz
 
-    stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    // fasta or fastq. Exact pattern match .fasta or .fa suffix with optional .gz (gzip) suffix
-    def suffix = task.ext.suffix ?: "${sequence}" ==~ /(.*f[astn]*a(.gz)?$)/ ? "fa" : "fq"
-
-    """
-    echo "" | gzip > ${prefix}.${suffix}.gz
+    # Remove outputs if empty (for some genomes the pattern does match chromosome-level scaffold accession numbers)
+    [ -z "\$(zcat ${prefix}.chromosomes.fa.gz | head)" ] && rm ${prefix}.chromosomes.fa.gz
+    [ -z "\$(zcat ${prefix}.mitogenome.fa.gz  | head)" ] && rm ${prefix}.mitogenome.fa.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        seqkit: \$( seqkit version | sed 's/seqkit v//' )
+        local_filter_module: 1.0.0
     END_VERSIONS
     """
 }
