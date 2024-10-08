@@ -68,9 +68,7 @@ This pipeline uses code and infrastructure developed and maintained by the [nf-c
 
 ### Pipeline tools
 
-- [SeqKit](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0163962)
-
-  > Shen W, Le S, Li Y, Hu F. SeqKit: A Cross-Platform and Ultrafast Toolkit for FASTA/Q File Manipulation. PLoS One. 2016 Oct 5;11(10):e0163962. doi: 10.1371/journal.pone.0163962. PMID: 27706213; PMCID: PMC5051824.
+- [Seqtk](https://github.com/lh3/seqtk)
 
 - [MultiQC](https://pubmed.ncbi.nlm.nih.gov/27312411/)
 

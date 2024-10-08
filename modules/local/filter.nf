@@ -12,9 +12,10 @@ process FILTER {
 
     output:
     tuple val(meta), path("*.chromosomes.fa.gz") , emit: chromosomes, optional: true
+    tuple val(meta), path("*_unmasked.fa.gz")    , emit: unmasked, optional: true
     tuple val(meta), path("*.mitogenome.fa.gz")  , emit: mitogenome, optional: true
-    tuple val(meta), path("*patterns.txt")       , emit: patterns
-    tuple val(meta), path("*contignames.txt")    , emit: contignames
+    tuple val(meta), path("*.patterns.txt")      , emit: patterns
+    tuple val(meta), path("*.contignames.txt")   , emit: contignames
     path "versions.yml"                          , emit: versions
 
     when:
@@ -44,8 +45,16 @@ process FILTER {
         seqtk subseq $genome - | gzip --best --no-name > ${prefix}.mitogenome.fa.gz
 
     # Remove outputs if empty (for some genomes the pattern does match chromosome-level scaffold accession numbers)
-    [ -z "\$(zcat ${prefix}.chromosomes.fa.gz | head)" ] && rm ${prefix}.chromosomes.fa.gz
     [ -z "\$(zcat ${prefix}.mitogenome.fa.gz  | head)" ] && rm ${prefix}.mitogenome.fa.gz
+
+    if [ -z "\$(zcat ${prefix}.chromosomes.fa.gz | head)" ]
+    then
+        rm ${prefix}.chromosomes.fa.gz
+    else
+        zcat ${prefix}.chromosomes.fa.gz |
+            awk '/^>/ {print \$0; next} {print toupper(\$0)}' |
+            gzip --best --no-name > ${prefix}.chromosomes_unmasked.fa.gz
+    fi
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
