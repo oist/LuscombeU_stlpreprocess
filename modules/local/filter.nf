@@ -44,9 +44,11 @@ process FILTER {
         grep -i mitochondri |
         seqtk subseq $genome - | gzip --best --no-name > ${prefix}.mitogenome.fa.gz
 
-    # Remove outputs if empty (for some genomes the pattern does match chromosome-level scaffold accession numbers)
-    [ -z "\$(zcat ${prefix}.mitogenome.fa.gz  | head)" ] && rm ${prefix}.mitogenome.fa.gz
+    # Remove mitogenome file if containing less or more than one sequence
+    [ \$(zcat ${prefix}.mitogenome.fa.gz | grep -c '>') -ne 1 ] && rm ${prefix}.mitogenome.fa.gz
 
+    # Remove outputs if empty (for some genomes the pattern does match chromosome-level scaffold accession numbers)
+    # And then, remove soft masks.
     if [ -z "\$(zcat ${prefix}.chromosomes.fa.gz | head)" ]
     then
         rm ${prefix}.chromosomes.fa.gz

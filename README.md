@@ -5,10 +5,10 @@
 **oist/LuscombeU_stlpreprocess** is a bioinformatics pipeline that ...
 
 1. Extract chromosomal scaffolds from the assembly file (discard unplaced, alternate, organelle sequences, etc.).
-2. Unmask the genome (to be re-masked later by another local pipeline.
-3. Extract mitochondrial genomes from the assembly file (they might be useful later as an internal control).
+2. Unmask the genome (to be re-masked later by another local pipeline).
+3. Extract complete mitochondrial genomes from the assembly file (they might be useful later as an internal control).
 4. Summarises the occurence of the first two letters of the accession numbers, to ease future changes of the grepping pattern for whole-chromosome scaffolds.
-5. Record the name of the extracted contigs, for instance to check if sex chromosomes are missing from the assembly.
+5. Record the name of the contigs, for instance to check if sex chromosomes are missing from the assembly.
 6. Show in the MultiQC report some assembly statistics such as GC content and contig length extracted with the <https://github.com/rpetit3/assembly-scan> software.
 
 ## Usage
