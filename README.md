@@ -11,6 +11,8 @@
 5. Record the name of the contigs, for instance to check if sex chromosomes are missing from the assembly.
 6. Show in the MultiQC report some assembly statistics such as GC content and contig length extracted with the <https://github.com/rpetit3/assembly-scan> software.
 
+After running this pipeline, you can follow with repeat masking using <https://github.com/oist/LuscombeU_stlrepeatmask>.
+
 ## Usage
 
 > [!NOTE]
