@@ -31,7 +31,7 @@ workflow STLPREPROCESS {
 
     FILTERED      ( ch_samplesheet )
     ch_versions = ch_versions.mix(FILTERED.out.versions.first())
-    ASSEMBLYSCAN  ( FILTERED.out.chromosomes )
+    ASSEMBLYSCAN  ( FILTERED.out.chromosomes.map{id, chr, idx1, idx2 -> [id, chr]} )
     ch_versions = ch_versions.mix(ASSEMBLYSCAN.out.versions.first())
     MULTIQC_ASSEMBLYSCAN_PLOT_DATA ( ASSEMBLYSCAN.out.json.collect{it[1]} ) // https://github.com/nf-core/pairgenomealign/blob/dev/modules/local/multiqc_assemblyscan_plot_data.nf
 
