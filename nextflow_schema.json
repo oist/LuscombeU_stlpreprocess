@@ -105,7 +105,7 @@
                     "hidden": true,
                     "help_text": "Use to set an upper-limit for the CPU requirement for each process. Should be an integer e.g. `--max_cpus 1`"
                 },
-                "memory": {
+                "assemblyscan_memory": {
                     "type": "string",
                     "description": "Memory given to ASSEMBLYSCAN.",
                     "default": "6.GB",

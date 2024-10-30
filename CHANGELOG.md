@@ -3,6 +3,12 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v4.0.0 - October 11th, 2024 ()
+
+ - Replace `seqtk subseq` with `samtools faidx` again for performance on very large genomes.
+ - Compress genomes with `bgzip` and index them.
+ - Add a `--assemblyscan_memory` parameter to run `assembly-scan` with more memory.
+
 ## v3.0.0 - October 8th, 2024 (Chaenocephalus aceratus)
 
  - Run assemblyscan on the filtered genomes.
@@ -23,4 +29,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## v1.0.0 - September 20th, 2024 (Orang Outan)
 
- - Initial release of oist/LuscombeU_stlpreprocess, created with the [nf-core](https://nf-co.re/) template.
+ - Initial release of `oist/LuscombeU_stlpreprocess`, created with the [nf-core](https://nf-co.re/) template.
