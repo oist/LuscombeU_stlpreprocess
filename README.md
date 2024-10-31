@@ -30,15 +30,26 @@ genome1	/path/to/genome/file.fastq.gz
 Now, you can run the pipeline using:
 
 ```bash
-nextflow run oist/LuscombeU_stlpreprocess \
+nextflow run oist/LuscombeU_stlpreprocess -r master \
    -profile <docker/singularity/.../institute> \
    --input samplesheet.tsv \
    --outdir <OUTDIR>
 ```
 
+The `-r master` option selects the branch or version of the pipeline.  Alternatives are `-r dev` for the latest version in development or version numbers such as `-r 3.0.0` for instance.
+
 > [!WARNING]
 > Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_;
 > see [docs](https://nf-co.re/usage/configuration#custom-configuration-files).
+
+## Resource usage
+
+ - On annelids, `assembly-scan` took a maximum of 2 GB memory.  Filtering is now very lean, using less than 300 MB.  All tasks completed in less than 40 min.
+
+Use the `--assemblyscan_memory` parameter to give more memory to `assembly-scan`.  The
+default is `6.GB`.  If not all the genomes are big, let the pipeline first
+process the small ones with default parameters, and then run it again with
+`-resume` and `--assemblyscan_memory`.
 
 ## Credits
 
