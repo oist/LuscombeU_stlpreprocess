@@ -3,6 +3,11 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v4.1.0 - November 21st, 2024 (Sulfurisphaera ohwakuensis)
+
+ - Allow `NC|NZ` in filtered contig names, for RefSeq assemblies.
+ - Discard contigs that match `plasmid`.
+
 ## v4.0.0 - November 1st, 2024 (Bufo bufo)
 
  - Replace `seqtk subseq` with `samtools faidx` again for performance on very large genomes.

@@ -2,12 +2,12 @@
 
 ## Introduction
 
-**oist/LuscombeU_stlpreprocess** is a bioinformatics pipeline that ...
+**oist/LuscombeU_stlpreprocess** is a bioinformatics pipeline to …
 
-1. Extract chromosomal scaffolds from the assembly file (discard unplaced, alternate, organelle sequences, etc.).
+1. Extract chromosomal scaffolds from the assembly file (discard unplaced, alternate, organelle and plasmid sequences, etc.).
 2. Unmask the genome (to be re-masked later by another local pipeline).
 3. Extract complete mitochondrial genomes from the assembly file (they might be useful later as an internal control).
-4. Summarises the occurence of the first two letters of the accession numbers, to ease future changes of the grepping pattern for whole-chromosome scaffolds.
+4. Summarise the occurence of the first two letters of the accession numbers, to ease future changes of the grepping pattern for whole-chromosome scaffolds.
 5. Record the name of the contigs, for instance to check if sex chromosomes are missing from the assembly.
 6. Show in the MultiQC report some assembly statistics such as GC content and contig length extracted with the <https://github.com/rpetit3/assembly-scan> software.
 
@@ -25,6 +25,8 @@ First, prepare a samplesheet with your input data that looks as follows:
 ```
 id	file
 genome1	/path/to/genome/file.fastq.gz
+genome2	https://url.example.com/to/genome/file.fastq.gz
+…
 ```
 
 Now, you can run the pipeline using:
@@ -53,9 +55,7 @@ process the small ones with default parameters, and then run it again with
 
 ## Credits
 
-oist/LuscombeU_stlpreprocess was originally written by @charles-plessy.
-
-We thank the following people for their extensive assistance in the development of this pipeline:
+`oist/LuscombeU_stlpreprocess` was originally written by `@charles-plessy`.
 
 ## Contributions and Support
 
