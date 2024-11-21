@@ -3,7 +3,7 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## v4.0.0 - October 11th, 2024 ()
+## v4.0.0 - November 1st, 2024 (Bufo bufo)
 
  - Replace `seqtk subseq` with `samtools faidx` again for performance on very large genomes.
  - Compress genomes with `bgzip` and index them.
