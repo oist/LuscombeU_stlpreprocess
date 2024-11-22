@@ -53,6 +53,14 @@ default is `6.GB`.  If not all the genomes are big, let the pipeline first
 process the small ones with default parameters, and then run it again with
 `-resume` and `--assemblyscan_memory`.
 
+## Pattern and exceptions
+
+The current pattern, `CM|CP|FR|L[R-T]|NC|NZ|O[U-Z]` matches complete chromosome
+scaffolds, plasmids and organelles almost exclusively. However there are some exceptions.
+
+ - _Drosophila melanogaster_'s `GCA_000001215` uses `AE` for chromosome scaffolds
+   and `CP` for `chrY` and unplaced scaffolds.
+
 ## Credits
 
 `oist/LuscombeU_stlpreprocess` was originally written by `@charles-plessy`.
