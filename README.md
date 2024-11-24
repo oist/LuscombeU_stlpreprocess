@@ -56,10 +56,13 @@ process the small ones with default parameters, and then run it again with
 ## Pattern and exceptions
 
 The current pattern, `CM|CP|FR|L[R-T]|NC|NZ|O[U-Z]` matches complete chromosome
-scaffolds, plasmids and organelles almost exclusively. However there are some exceptions.
+scaffolds, plasmids and organelles almost exclusively. However there are exceptions.
 
  - _Drosophila melanogaster_'s `GCA_000001215` uses `AE` for chromosome scaffolds
    and `CP` for `chrY` and unplaced scaffolds.
+ - _Brassica rapa_'s `GCA_900412535.3` uses `LS` for chromosomes and `OV` for shotgun
+   scaffolds.
+ - _Brassica oleracea_ `GCA_900416815`: `LS` / `OW`.
 
 ## Credits
 
