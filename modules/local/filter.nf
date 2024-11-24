@@ -41,7 +41,7 @@ process FILTER {
     sed 's/^>//' ${prefix}.contignames.txt |
         grep -vi -e mitochondri -e plasmid |
         awk '{print \$1}' |
-        grep -E "^(CM|CP|FR|L[R-T]|NC|NZ|O[U-Z])" > ${prefix}.contignames.chromosomes.txt ||
+        grep -E "^(AP|BX|CM|CP|FR|L[R-T]|NC|NZ|O[U-Z])" > ${prefix}.contignames.chromosomes.txt ||
         true > /dev/null # Returns success even if list is empty.
     samtools faidx -r ${prefix}.contignames.chromosomes.txt ${prefix}.orig_bgzipped.fa.gz | bgzip --threads $task.cpus --compress-level 9 > ${prefix}.chromosomes.fa.gz
 

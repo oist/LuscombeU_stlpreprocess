@@ -63,6 +63,22 @@ scaffolds, plasmids and organelles almost exclusively. However there are excepti
  - _Brassica rapa_'s `GCA_900412535.3` uses `LS` for chromosomes and `OV` for shotgun
    scaffolds.
  - _Brassica oleracea_ `GCA_900416815`: `LS` / `OW`.
+ - _Strongyloides_ratti_GCA_001040885`: has only `LN` for both chromosome and
+   unplaced scaffold sequences.
+ - _Caenorhabditis inopinata_ `GCA_003052745.1`: `AP`.
+ - _Caenorhabditis elegans_ `GCA_000002985.3`: `BX`.
+
+To find the names of the genomes where nothing was extracted, try:
+
+```
+basename -s .patterns.txt *.patterns.txt | sed 's/$/.chromosomes_unmasked.fa.gz/' | xargs ls > /dev/null
+```
+
+To check if a new pattern would be suitable, try:
+
+```
+find . -name *patterns.txt | xargs grep -l AP | xargs head
+```
 
 ## Credits
 
