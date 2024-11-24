@@ -67,6 +67,10 @@ scaffolds, plasmids and organelles almost exclusively. However there are excepti
    unplaced scaffold sequences.
  - _Caenorhabditis inopinata_ `GCA_003052745.1`: `AP`.
  - _Caenorhabditis elegans_ `GCA_000002985.3`: `BX`.
+ - `AE` is rare and appears to be found only in chromosome sequences of old assemblies such as
+   `GCA_000001215.4` (_D. melanogaster_), `GCA_000008565.1` (_Deinococcus radiodurans_), or
+   `GCA_000008125.1` (_T. thermophilus_).  However it is also in unplaced sequences of
+   `GCA_000309985.3` (_Brassica rapa_).  Altogether, it is better not to allow it.
 
 To find the names of the genomes where nothing was extracted, try:
 
