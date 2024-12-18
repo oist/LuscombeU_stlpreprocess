@@ -6,10 +6,11 @@
 
 1. Extract chromosomal scaffolds from the assembly file (discard unplaced, alternate, organelle and plasmid sequences, etc.).
 2. Unmask the genome (to be re-masked later by another local pipeline).
-3. Extract complete mitochondrial genomes from the assembly file (they might be useful later as an internal control).
-4. Summarise the occurence of the first two letters of the accession numbers, to ease future changes of the grepping pattern for whole-chromosome scaffolds.
+3. Extract complete organelle genomes from the assembly file (they might be useful later as an internal control).
+4. Summarise the occurrence of the first two letters of the accession numbers, to ease future changes of the grepping pattern for whole-chromosome scaffolds.
 5. Record the name of the contigs, for instance to check if sex chromosomes are missing from the assembly.
-6. Show in the MultiQC report some assembly statistics such as GC content and contig length extracted with the <https://github.com/rpetit3/assembly-scan> software.
+6. Re-compress the assemblies with [bgzip](https://www.htslib.org/doc/bgzip.html), for future uses such as CRAM compression.
+7. Show in the MultiQC report some assembly statistics such as GC content and contig length extracted with the <https://github.com/rpetit3/assembly-scan> software.
 
 After running this pipeline, you can follow with repeat masking using <https://github.com/oist/LuscombeU_stlrepeatmask>.
 
