@@ -7,7 +7,8 @@
 include { ASSEMBLYSCAN                 } from '../modules/nf-core/assemblyscan/main'
 include { MULTIQC                      } from '../modules/nf-core/multiqc/main'
 include { MULTIQC_ASSEMBLYSCAN_PLOT_DATA} from '../modules/local/multiqc_assemblyscan_plot_data'
-include { FILTER as FILTERED           } from '../modules/local/filter'
+include { FILTER     as FILTERED_FULL  } from '../modules/local/filter'
+include { UNMASK     as FILTERED_SKIP  } from '../modules/local/unmask'
 include { paramsSummaryMap             } from 'plugin/nf-validation'
 include { paramsSummaryMultiqc         } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML       } from '../subworkflows/nf-core/utils_nfcore_pipeline'
@@ -29,10 +30,17 @@ workflow STLPREPROCESS {
     ch_versions = Channel.empty()
     ch_multiqc_files = Channel.empty()
 
-    FILTERED      ( ch_samplesheet )
-    ch_versions = ch_versions.mix(FILTERED.out.versions.first())
-    ASSEMBLYSCAN  ( FILTERED.out.chromosomes.map{id, chr, idx1, idx2 -> [id, chr]} )
-    ch_versions = ch_versions.mix(ASSEMBLYSCAN.out.versions.first())
+    if (! params.skip_filtering ) {
+        FILTERED_FULL ( ch_samplesheet )
+        ch_versions = ch_versions.mix(FILTERED_FULL.out.versions)
+        ch_filtered = FILTERED_FULL.out.chromosomes.map{id, chr, idx1, idx2 -> [id, chr]}
+    } else {
+        FILTERED_SKIP ( ch_samplesheet )
+        ch_versions = ch_versions.mix(FILTERED_SKIP.out.versions)
+        ch_filtered = FILTERED_SKIP.out.unmasked
+    }
+    ASSEMBLYSCAN  ( ch_filtered )
+    ch_versions = ch_versions.mix(ASSEMBLYSCAN.out.versions)
     MULTIQC_ASSEMBLYSCAN_PLOT_DATA ( ASSEMBLYSCAN.out.json.collect{it[1]} ) // https://github.com/nf-core/pairgenomealign/blob/dev/modules/local/multiqc_assemblyscan_plot_data.nf
 
     //

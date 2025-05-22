@@ -3,6 +3,11 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v4.3.0 - May 22nd, 2025 (Lambdavirus lambda)
+
+ - Add `--skip_filtering` option.  This is useful for downloading viral genomes where
+   heuristics don't work and are not needed anyway.
+
 ## v4.2.0 - November 24st, 2024 (Caenorhabditis inopinata)
 
  - Allow `AP` and `BX` to rescue some Caenorhabditis assemblies.  `AP` rescues also
