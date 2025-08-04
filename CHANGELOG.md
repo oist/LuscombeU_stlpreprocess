@@ -3,6 +3,11 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v4.4.0 - August 4th, 2025 (Vita generat potentiam)
+
+ - Allow `HG` in filtered contig names.  It is used in the dog genome from phase 1.0
+   of the vertebrate genome project, and a few insect genomes.
+
 ## v4.3.0 - May 22nd, 2025 (Lambdavirus lambda)
 
  - Add `--skip_filtering` option.  This is useful for downloading viral genomes where

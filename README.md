@@ -58,7 +58,12 @@ process the small ones with default parameters, and then run it again with
 
 ## Pattern and exceptions
 
-The current pattern, `CM|CP|FR|L[R-T]|NC|NZ|O[U-Z]` matches complete chromosome
+ - `v4.4`: `AP|BX|CM|CP|FR|HG|L[R-T]|NC|NZ|O[U-Z]`.
+ - `v4.2`: `AP|BX|CM|CP|FR|L[R-T]|NC|NZ|O[U-Z]`.
+ - `v4.1`: `CM|CP|FR|L[R-T]|NC|NZ|O[U-Z]`.
+ - `v1.1`: `CM|CP|FR|L[R-T]|O[U-Z]`.
+
+The `v4.4` pattern matches complete chromosome
 scaffolds, plasmids and organelles almost exclusively. However there are exceptions.
 
  - _Drosophila melanogaster_'s `GCA_000001215` uses `AE` for chromosome scaffolds
@@ -68,12 +73,12 @@ scaffolds, plasmids and organelles almost exclusively. However there are excepti
  - _Brassica oleracea_ `GCA_900416815`: `LS` / `OW`.
  - _Strongyloides_ratti_GCA_001040885`: has only `LN` for both chromosome and
    unplaced scaffold sequences.
- - _Caenorhabditis inopinata_ `GCA_003052745.1`: `AP`.
- - _Caenorhabditis elegans_ `GCA_000002985.3`: `BX`.
  - `AE` is rare and appears to be found only in chromosome sequences of old assemblies such as
    `GCA_000001215.4` (_D. melanogaster_), `GCA_000008565.1` (_Deinococcus radiodurans_), or
    `GCA_000008125.1` (_T. thermophilus_).  However it is also in unplaced sequences of
    `GCA_000309985.3` (_Brassica rapa_).  Altogether, it is better not to allow it.
+ - Beware that some fish genomes also have `AP` in their unplaced scaffold names.  You might
+   want to use `v4.1` in that case.
 
 To find the names of the genomes where nothing was extracted, try:
 
