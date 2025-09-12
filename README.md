@@ -58,13 +58,14 @@ process the small ones with default parameters, and then run it again with
 
 ## Pattern and exceptions
 
+ - `v4.6`:  AP|BK|BX|CM|CP|CR|CU|FR|HE|HF|HG|L[R-T]|NC|NZ|O[U-Z]`
  - `v4.5`:  AP|BK|BX|CM|CP|CR|FR|HE|HF|HG|L[R-T]|NC|NZ|O[U-Z]`
  - `v4.4`: `AP|BX|CM|CP|FR|HG|L[R-T]|NC|NZ|O[U-Z]`.
  - `v4.2`: `AP|BX|CM|CP|FR|L[R-T]|NC|NZ|O[U-Z]`.
  - `v4.1`: `CM|CP|FR|L[R-T]|NC|NZ|O[U-Z]`.
  - `v1.1`: `CM|CP|FR|L[R-T]|O[U-Z]`.
 
-The `v4.5` pattern matches complete chromosome
+The `v4.6` pattern matches complete chromosome
 scaffolds, plasmids and organelles almost exclusively. However there are exceptions.
 
  - _Drosophila melanogaster_'s `GCA_000001215` uses `AE` for chromosome scaffolds
