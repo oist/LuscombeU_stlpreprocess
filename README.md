@@ -58,8 +58,8 @@ process the small ones with default parameters, and then run it again with
 
 ## Pattern and exceptions
 
- - `v4.6`:  AP|BK|BX|CM|CP|CR|CU|FR|HE|HF|HG|L[R-T]|NC|NZ|O[U-Z]`
- - `v4.5`:  AP|BK|BX|CM|CP|CR|FR|HE|HF|HG|L[R-T]|NC|NZ|O[U-Z]`
+ - `v4.6`: `AP|BK|BX|CM|CP|CR|CU|FR|HE|HF|HG|L[R-T]|NC|NZ|O[U-Z]`
+ - `v4.5`: `AP|BK|BX|CM|CP|CR|FR|HE|HF|HG|L[R-T]|NC|NZ|O[U-Z]`
  - `v4.4`: `AP|BX|CM|CP|FR|HG|L[R-T]|NC|NZ|O[U-Z]`.
  - `v4.2`: `AP|BX|CM|CP|FR|L[R-T]|NC|NZ|O[U-Z]`.
  - `v4.1`: `CM|CP|FR|L[R-T]|NC|NZ|O[U-Z]`.
@@ -77,11 +77,15 @@ scaffolds, plasmids and organelles almost exclusively. However there are excepti
    unplaced scaffold sequences.
  - `AE` is rare and appears to be found only in chromosome sequences of old assemblies such as
    `GCA_000001215.4` (_D. melanogaster_), `GCA_000008565.1` (_Deinococcus radiodurans_), or
-   `GCA_000008125.1` (_T. thermophilus_).  However it is also in unplaced sequences of
-   `GCA_000309985.3` (_Brassica rapa_).  Altogether, it is better not to allow it.
+   `GCA_000008125.1` (_T. thermophilus_), or `GCA_000091025.4` (_Eremothecium gossypii_).
+    However it is also in unplaced sequences of `GCA_000309985.3` (_Brassica rapa_).
+    Altogether, is it better not to allow it?
  - Beware that some fish genomes also have `AP` in their unplaced scaffold names.  You might
    want to use `v4.1` in that case.
  - `FUGU5` uses `HE` for all if its sequences.
+ - `FM` found at least in `Candida_dubliniensis_CD36_GCA_000026945.1`.
+ - `FN` found at least in `Komagataella_phaffii_GS115_GCA_000027005.1`.
+ - `DG` found at least in `Cyberlindnera_jadinii_NBRC_0988_GCA_000328385.1`
 
 To find the names of the genomes where nothing was extracted, try:
 
