@@ -15,6 +15,8 @@ process FILTER {
     tuple val(meta), path("*_unmasked.fa.gz"),      path("*_unmasked.fa.fai"),      path("*_unmasked.fa.gz.gzi")      , emit: unmasked,      optional: true
     tuple val(meta), path("*.orig_bgzipped.fa.gz"), path("*.orig_bgzipped.fa.fai"), path("*.orig_bgzipped.fa.gz.gzi") , emit: orig_bgzipped, optional: true
     tuple val(meta), path("*.mitogenome.fa.gz")                                                                       , emit: mitogenome,    optional: true
+    tuple val(meta), path("*.chlorogenome.fa.gz")                                                                     , emit: chlorogenome,  optional: true
+    tuple val(meta), path("*.apicogenome.fa.gz")                                                                      , emit: apicogenome,   optional: true
     tuple val(meta), path("*.contignames.txt")   , emit: contignames
     tuple val(meta), path("*.patterns.txt")      , emit: patterns
     path "versions.yml"                          , emit: versions
@@ -39,7 +41,7 @@ process FILTER {
 
     # Keep only complete chromosomes but remove the mitogenome and plasmids
     sed 's/^>//' ${prefix}.contignames.txt |
-        grep -vi -e mitochondri -e plasmid |
+        grep -vi -e mitochondri -e chloroplast -e apicoplast -e plasmid |
         awk '{print \$1}' |
         grep -E "^(AP|BK|BX|CM|CP|CR|CU|FR|HE|HF|HG|L[R-T]|NC|NZ|O[U-Z])" > ${prefix}.contignames.chromosomes.txt ||
         true > /dev/null # Returns success even if list is empty.
@@ -76,15 +78,14 @@ process FILTER {
     # Remove chloroplast file if containing less or more than one sequence
     [ \$(zcat ${prefix}.chlorogenome.fa.gz | grep -c '>') -ne 1 ] && rm ${prefix}.chlorogenome.fa.gz
 
-
     # And then extract the apicoplast genome as well
     sed 's/^>//' ${prefix}.contignames.txt |
         grep -i apicoplast |
         awk '{print \$1}' |
-        samtools faidx -r - ${prefix}.orig_bgzipped.fa.gz | gzip --best --no-name > ${prefix}.apicoplast.fa.gz
+        samtools faidx -r - ${prefix}.orig_bgzipped.fa.gz | gzip --best --no-name > ${prefix}.apicogenome.fa.gz
 
     # Remove apicoplast file if containing less or more than one sequence
-    [ \$(zcat ${prefix}.apicoplast.fa.gz | grep -c '>') -ne 1 ] && rm ${prefix}.apicoplast.fa.gz
+    [ \$(zcat ${prefix}.apicogenome.fa.gz | grep -c '>') -ne 1 ] && rm ${prefix}.apicogenome.fa.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
