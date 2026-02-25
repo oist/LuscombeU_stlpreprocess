@@ -65,7 +65,7 @@ process FILTER {
         grep -i mitochondri |
         awk '{print \$1}' |
         samtools faidx -r - ${prefix}.orig_bgzipped.fa.gz | gzip --best --no-name > ${prefix}.mitogenome.fa.gz
-    
+
     # Remove mitogenome file if containing less or more than one sequence
     [ \$(zcat ${prefix}.mitogenome.fa.gz | grep -c '>') -ne 1 ] && rm ${prefix}.mitogenome.fa.gz
 
