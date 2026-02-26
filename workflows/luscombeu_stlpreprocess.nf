@@ -31,16 +31,13 @@ workflow LUSCOMBEU_STLPREPROCESS {
 
     if (! params.skip_filtering ) {
         FILTERED_FULL ( ch_samplesheet )
-        ch_versions = ch_versions.mix(FILTERED_FULL.out.versions)
         ch_filtered = FILTERED_FULL.out.chromosomes.map{id, chr, idx1, idx2 -> [id, chr]}
     } else {
         FILTERED_SKIP ( ch_samplesheet )
-        ch_versions = ch_versions.mix(FILTERED_SKIP.out.versions)
         ch_filtered = FILTERED_SKIP.out.unmasked
     }
     ASSEMBLYSCAN  ( ch_filtered )
-    ch_versions = ch_versions.mix(ASSEMBLYSCAN.out.versions)
-    MULTIQC_ASSEMBLYSCAN_PLOT_DATA ( ASSEMBLYSCAN.out.json.collect{it[1]} ) // https://github.com/nf-core/pairgenomealign/blob/dev/modules/local/multiqc_assemblyscan_plot_data.nf
+    MULTIQC_ASSEMBLYSCAN_PLOT_DATA ( ASSEMBLYSCAN.out.report.collect{it[1]} ) // https://github.com/nf-core/pairgenomealign/blob/dev/modules/local/multiqc_assemblyscan_plot_data.nf
 
     //
     // Collate and save software versions
@@ -85,7 +82,7 @@ workflow LUSCOMBEU_STLPREPROCESS {
         channel.empty()
 
     summary_params      = paramsSummaryMap(
-        workflow, parameters_schema: "nextflow_schema.json")
+        workflow, parameters_schema: "nextflow_schema.report")
     ch_workflow_summary = channel.value(paramsSummaryMultiqc(summary_params))
     ch_multiqc_files = ch_multiqc_files.mix(
         ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
@@ -113,7 +110,6 @@ workflow LUSCOMBEU_STLPREPROCESS {
     )
 
     emit:multiqc_report = MULTIQC.out.report.toList() // channel: /path/to/multiqc_report.html
-    versions       = ch_versions                 // channel: [ path(versions.yml) ]
 
 }
 

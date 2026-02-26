@@ -12,7 +12,7 @@ process UNMASK {
 
     output:
     tuple val(meta), path("*_unmasked.fa.gz"), emit: unmasked
-    tuple val("${task.process}"), val('local_unmask_module'), "1.0.0", emit: versions_local_unmask_module, topic: versions
+    tuple val("${task.process}"), val('local_unmask_module'), val("1.0.0"), emit: versions_local_unmask_module, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

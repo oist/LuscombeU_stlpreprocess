@@ -19,7 +19,7 @@ process FILTER {
     tuple val(meta), path("*.apicogenome.fa.gz")                                                                      , emit: apicogenome,   optional: true
     tuple val(meta), path("*.contignames.txt")   , emit: contignames
     tuple val(meta), path("*.patterns.txt")      , emit: patterns
-    tuple val("${task.process}"), val('local_filter_module'), "1.1.0", topic: versions, emit: versions_local_filter_module
+    tuple val("${task.process}"), val('local_filter_module'), val("1.1.0"), topic: versions, emit: versions_local_filter_module
 
     when:
     task.ext.when == null || task.ext.when
