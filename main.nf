@@ -1,13 +1,11 @@
 #!/usr/bin/env nextflow
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    oist/LuscombeU_stlpreprocess
+    oist/luscombeu_stlpreprocess
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    Github : https://github.com/oist/LuscombeU_stlpreprocess
+    Github : https://github.com/oist/luscombeu_stlpreprocess
 ----------------------------------------------------------------------------------------
 */
-
-nextflow.enable.dsl = 2
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -15,10 +13,9 @@ nextflow.enable.dsl = 2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { STLPREPROCESS  } from './workflows/stlpreprocess'
-include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_stlpreprocess_pipeline'
-include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_stlpreprocess_pipeline'
-
+include { LUSCOMBEU_STLPREPROCESS  } from './workflows/luscombeu_stlpreprocess'
+include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_luscombeu_stlpreprocess_pipeline'
+include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_luscombeu_stlpreprocess_pipeline'
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     NAMED WORKFLOWS FOR PIPELINE
@@ -28,7 +25,7 @@ include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_stlp
 //
 // WORKFLOW: Run main analysis pipeline depending on type of input
 //
-workflow OIST_STLPREPROCESS {
+workflow OIST_LUSCOMBEU_STLPREPROCESS {
 
     take:
     samplesheet // channel: samplesheet read in from --input
@@ -38,13 +35,11 @@ workflow OIST_STLPREPROCESS {
     //
     // WORKFLOW: Run pipeline
     //
-    STLPREPROCESS (
+    LUSCOMBEU_STLPREPROCESS (
         samplesheet
     )
-
     emit:
-    multiqc_report = STLPREPROCESS.out.multiqc_report // channel: /path/to/multiqc_report.html
-
+    multiqc_report = LUSCOMBEU_STLPREPROCESS.out.multiqc_report // channel: /path/to/multiqc_report.html
 }
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -55,27 +50,27 @@ workflow OIST_STLPREPROCESS {
 workflow {
 
     main:
-
     //
     // SUBWORKFLOW: Run initialisation tasks
     //
     PIPELINE_INITIALISATION (
         params.version,
-        params.help,
         params.validate_params,
         params.monochrome_logs,
         args,
         params.outdir,
-        params.input
+        params.input,
+        params.help,
+        params.help_full,
+        params.show_hidden
     )
 
     //
     // WORKFLOW: Run main workflow
     //
-    OIST_STLPREPROCESS (
+    OIST_LUSCOMBEU_STLPREPROCESS (
         PIPELINE_INITIALISATION.out.samplesheet
     )
-
     //
     // SUBWORKFLOW: Run completion tasks
     //
@@ -86,7 +81,7 @@ workflow {
         params.outdir,
         params.monochrome_logs,
         params.hook_url,
-        OIST_STLPREPROCESS.out.multiqc_report
+        OIST_LUSCOMBEU_STLPREPROCESS.out.multiqc_report
     )
 }
 
