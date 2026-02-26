@@ -12,7 +12,7 @@ process UNMASK {
 
     output:
     tuple val(meta), path("*_unmasked.fa.gz"), emit: unmasked
-    path "versions.yml"                      , emit: versions
+    tuple val("${task.process}"), val('local_unmask_module'), "1.0.0", emit: versions_local_unmask_module, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,10 +27,5 @@ process UNMASK {
     zcat ${genome} |
         awk '/^>/ {print \$0; next} {print toupper(\$0)}' |
         bgzip --threads $task.cpus --compress-level 9 > ${prefix}_unmasked.fa.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        local_unmask_module: 1.0.0
-    END_VERSIONS
     """
 }

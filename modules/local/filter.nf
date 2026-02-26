@@ -19,7 +19,7 @@ process FILTER {
     tuple val(meta), path("*.apicogenome.fa.gz")                                                                      , emit: apicogenome,   optional: true
     tuple val(meta), path("*.contignames.txt")   , emit: contignames
     tuple val(meta), path("*.patterns.txt")      , emit: patterns
-    path "versions.yml"                          , emit: versions
+    tuple val("${task.process}"), val('local_filter_module'), "1.1.0", topic: versions, emit: versions_local_filter_module
 
     when:
     task.ext.when == null || task.ext.when
@@ -86,10 +86,5 @@ process FILTER {
 
     # Remove apicoplast file if containing less or more than one sequence
     [ \$(zcat ${prefix}.apicogenome.fa.gz | grep -c '>') -ne 1 ] && rm ${prefix}.apicogenome.fa.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        local_filter_module: 1.0.0
-    END_VERSIONS
     """
 }
