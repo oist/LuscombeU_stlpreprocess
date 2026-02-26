@@ -41,7 +41,7 @@ nextflow run oist/LuscombeU_stlpreprocess -r master \
    --outdir <OUTDIR>
 ```
 
-The `-r master` option selects the branch or version of the pipeline.  Alternatives are `-r dev` for the latest version in development or version numbers such as `-r 3.0.0` for instance.
+The `-r master` option selects the branch or version of the pipeline. Alternatives are `-r dev` for the latest version in development or version numbers such as `-r 3.0.0` for instance.
 
 > [!WARNING]
 > Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_;
@@ -49,43 +49,43 @@ The `-r master` option selects the branch or version of the pipeline.  Alternati
 
 ## Resource usage
 
- - On annelids, `assembly-scan` took a maximum of 2 GB memory.  Filtering is now very lean, using less than 300 MB.  All tasks completed in less than 40 min.
+- On annelids, `assembly-scan` took a maximum of 2 GB memory. Filtering is now very lean, using less than 300 MB. All tasks completed in less than 40 min.
 
-Use the `--assemblyscan_memory` parameter to give more memory to `assembly-scan`.  The
-default is `6.GB`.  If not all the genomes are big, let the pipeline first
+Use the `--assemblyscan_memory` parameter to give more memory to `assembly-scan`. The
+default is `6.GB`. If not all the genomes are big, let the pipeline first
 process the small ones with default parameters, and then run it again with
 `-resume` and `--assemblyscan_memory`.
 
 ## Pattern and exceptions
 
- - `v4.6`: `AP|BK|BX|CM|CP|CR|CU|FR|HE|HF|HG|L[R-T]|NC|NZ|O[U-Z]`
- - `v4.5`: `AP|BK|BX|CM|CP|CR|FR|HE|HF|HG|L[R-T]|NC|NZ|O[U-Z]`
- - `v4.4`: `AP|BX|CM|CP|FR|HG|L[R-T]|NC|NZ|O[U-Z]`.
- - `v4.2`: `AP|BX|CM|CP|FR|L[R-T]|NC|NZ|O[U-Z]`.
- - `v4.1`: `CM|CP|FR|L[R-T]|NC|NZ|O[U-Z]`.
- - `v1.1`: `CM|CP|FR|L[R-T]|O[U-Z]`.
+- `v4.6`: `AP|BK|BX|CM|CP|CR|CU|FR|HE|HF|HG|L[R-T]|NC|NZ|O[U-Z]`
+- `v4.5`: `AP|BK|BX|CM|CP|CR|FR|HE|HF|HG|L[R-T]|NC|NZ|O[U-Z]`
+- `v4.4`: `AP|BX|CM|CP|FR|HG|L[R-T]|NC|NZ|O[U-Z]`.
+- `v4.2`: `AP|BX|CM|CP|FR|L[R-T]|NC|NZ|O[U-Z]`.
+- `v4.1`: `CM|CP|FR|L[R-T]|NC|NZ|O[U-Z]`.
+- `v1.1`: `CM|CP|FR|L[R-T]|O[U-Z]`.
 
 The `v4.6` pattern matches complete chromosome
 scaffolds, plasmids and organelles almost exclusively. However there are exceptions.
 
- - _Drosophila melanogaster_'s `GCA_000001215` uses `AE` for chromosome scaffolds
-   and `CP` for `chrY` and unplaced scaffolds.
- - _Brassica rapa_'s `GCA_900412535.3` uses `LS` for chromosomes and `OV` for shotgun
-   scaffolds.
- - _Brassica oleracea_ `GCA_900416815`: `LS` / `OW`.
- - _Strongyloides_ratti_GCA_001040885`: has only `LN` for both chromosome and
-   unplaced scaffold sequences.
- - `AE` is rare and appears to be found only in chromosome sequences of old assemblies such as
-   `GCA_000001215.4` (_D. melanogaster_), `GCA_000008565.1` (_Deinococcus radiodurans_), or
-   `GCA_000008125.1` (_T. thermophilus_), or `GCA_000091025.4` (_Eremothecium gossypii_).
-    However it is also in unplaced sequences of `GCA_000309985.3` (_Brassica rapa_).
-    Altogether, is it better not to allow it?
- - Beware that some fish genomes also have `AP` in their unplaced scaffold names.  You might
-   want to use `v4.1` in that case.
- - `FUGU5` uses `HE` for all if its sequences.
- - `FM` found at least in `Candida_dubliniensis_CD36_GCA_000026945.1`.
- - `FN` found at least in `Komagataella_phaffii_GS115_GCA_000027005.1`.
- - `DG` found at least in `Cyberlindnera_jadinii_NBRC_0988_GCA_000328385.1`
+- _Drosophila melanogaster_'s `GCA_000001215` uses `AE` for chromosome scaffolds
+  and `CP` for `chrY` and unplaced scaffolds.
+- _Brassica rapa_'s `GCA_900412535.3` uses `LS` for chromosomes and `OV` for shotgun
+  scaffolds.
+- _Brassica oleracea_ `GCA_900416815`: `LS` / `OW`.
+- \_Strongyloides_ratti_GCA_001040885`: has only `LN` for both chromosome and
+  unplaced scaffold sequences.
+- `AE` is rare and appears to be found only in chromosome sequences of old assemblies such as
+  `GCA_000001215.4` (_D. melanogaster_), `GCA_000008565.1` (_Deinococcus radiodurans_), or
+  `GCA_000008125.1` (_T. thermophilus_), or `GCA_000091025.4` (_Eremothecium gossypii_).
+  However it is also in unplaced sequences of `GCA_000309985.3` (_Brassica rapa_).
+  Altogether, is it better not to allow it?
+- Beware that some fish genomes also have `AP` in their unplaced scaffold names. You might
+  want to use `v4.1` in that case.
+- `FUGU5` uses `HE` for all if its sequences.
+- `FM` found at least in `Candida_dubliniensis_CD36_GCA_000026945.1`.
+- `FN` found at least in `Komagataella_phaffii_GS115_GCA_000027005.1`.
+- `DG` found at least in `Cyberlindnera_jadinii_NBRC_0988_GCA_000328385.1`
 
 To find the names of the genomes where nothing was extracted, try:
 

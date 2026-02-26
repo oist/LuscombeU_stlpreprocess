@@ -30,7 +30,7 @@
                 },
                 "skip_filtering": {
                     "type": "boolean",
-		    "default": true,
+                    "default": true,
                     "description": "Do not filter the sequences in the genome files."
                 },
                 "email": {
