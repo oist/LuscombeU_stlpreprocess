@@ -22,8 +22,8 @@
             "@id": "./",
             "@type": "Dataset",
             "creativeWorkStatus": "Stable",
-            "datePublished": "2026-02-26T02:18:23+00:00",
-            "description": "# oist/luscombeu_stlpreprocess\n\n## Introduction\n\n**oist/luscombeu_stlpreprocess** is a bioinformatics pipeline that ...\n\n<!-- TODO nf-core:\n   Complete this sentence with a 2-3 sentence summary of what types of data the pipeline ingests, a brief overview of the\n   major pipeline sections and the types of output it produces. You're giving an overview to someone new\n   to nf-core here, in 15-20 seconds. For an example, see https://github.com/nf-core/rnaseq/blob/master/README.md#introduction\n-->\n\n<!-- TODO nf-core: Include a figure that guides the user through the major workflow steps. Many nf-core\n     workflows use the \"tube map\" design for that. See https://nf-co.re/docs/guidelines/graphic_design/workflow_diagrams#examples for examples.   -->\n<!-- TODO nf-core: Fill in short bullet-pointed list of the default steps in the pipeline -->1. Read QC ([`FastQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/))2. Present QC for raw reads ([`MultiQC`](http://multiqc.info/))\n\n## Usage\n\n> [!NOTE]\n> If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/usage/installation) on how to set-up Nextflow. Make sure to [test your setup](https://nf-co.re/docs/usage/introduction#how-to-run-a-pipeline) with `-profile test` before running the workflow on actual data.\n\n<!-- TODO nf-core: Describe the minimum required steps to execute the pipeline, e.g. how to prepare samplesheets.\n     Explain what rows and columns represent. For instance (please edit as appropriate):\n\nFirst, prepare a samplesheet with your input data that looks as follows:\n\n`samplesheet.csv`:\n\n```csv\nsample,fastq_1,fastq_2\nCONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz\n```\n\nEach row represents a fastq file (single-end) or a pair of fastq files (paired end).\n\n-->\n\nNow, you can run the pipeline using:\n\n<!-- TODO nf-core: update the following command to include all required parameters for a minimal example -->\n\n```bash\nnextflow run oist/luscombeu_stlpreprocess \\\n   -profile <docker/singularity/.../institute> \\\n   --input samplesheet.csv \\\n   --outdir <OUTDIR>\n```\n\n> [!WARNING]\n> Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_; see [docs](https://nf-co.re/docs/usage/getting_started/configuration#custom-configuration-files).\n\n## Credits\n\noist/luscombeu_stlpreprocess was originally written by Charles Plessy, Mohammed Mahdi, Takahiro Fujita.\n\nWe thank the following people for their extensive assistance in the development of this pipeline:\n\n<!-- TODO nf-core: If applicable, make list of people who have also contributed -->\n\n## Contributions and Support\n\nIf you would like to contribute to this pipeline, please see the [contributing guidelines](.github/CONTRIBUTING.md).\n\n## Citations\n\n<!-- TODO nf-core: Add citation for pipeline after first release. Uncomment lines below and update Zenodo doi and badge at the top of this file. -->\n<!-- If you use oist/luscombeu_stlpreprocess for your analysis, please cite it using the following doi: [10.5281/zenodo.XXXXXX](https://doi.org/10.5281/zenodo.XXXXXX) -->\n\n<!-- TODO nf-core: Add bibliography of tools and data used in your pipeline -->\n\nAn extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.\n\nThis pipeline uses code and infrastructure developed and maintained by the [nf-core](https://nf-co.re) community, reused here under the [MIT license](https://github.com/nf-core/tools/blob/main/LICENSE).\n\n> **The nf-core framework for community-curated bioinformatics pipelines.**\n>\n> Philip Ewels, Alexander Peltzer, Sven Fillinger, Harshil Patel, Johannes Alneberg, Andreas Wilm, Maxime Ulysse Garcia, Paolo Di Tommaso & Sven Nahnsen.\n>\n> _Nat Biotechnol._ 2020 Feb 13. doi: [10.1038/s41587-020-0439-x](https://dx.doi.org/10.1038/s41587-020-0439-x).\n",
+            "datePublished": "2026-02-27T02:32:59+00:00",
+            "description": "# Genome download and pre-processing pipeline\n\n## Introduction\n\n**oist/LuscombeU_stlpreprocess** is a bioinformatics pipeline to \u2026\n\n1. Extract chromosomal scaffolds from the assembly file. (discard unplaced, alternate, mitochondria genes, chloroplast genes, apicoplastgenes, and plasmid sequences, etc.).\n2. Unmask the genome (to be re-masked later by another local pipeline).\n3. Extract complete organelle genomes from the assembly file (they might be useful later as an internal control).\n4. Summarise the occurrence of the first two letters of the accession numbers, to ease future changes of the grepping pattern for whole-chromosome scaffolds.\n5. Record the name of the contigs, for instance to check if sex chromosomes are missing from the assembly.\n6. Re-compress the assemblies with [bgzip](https://www.htslib.org/doc/bgzip.html), for BAM indexing or CRAM compression.\n7. Show in the MultiQC report some assembly statistics such as GC content and contig length extracted with the <https://github.com/rpetit3/assembly-scan> software.\n\nSteps 3\u20135 can be skipped with the `--skip_filtering` option, which can be useful with viral assemblies, for instance.\n\nAfter running this pipeline, you can follow with repeat masking using <https://github.com/oist/LuscombeU_stlrepeatmask>.\n\n## Usage\n\n> [!NOTE]\n> If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/usage/installation) on how to set-up Nextflow. Make sure to [test your setup](https://nf-co.re/docs/usage/introduction#how-to-run-a-pipeline) with `-profile test` before running the workflow on actual data.\n\nFirst, prepare a samplesheet with your input data that looks as follows:\n\n`samplesheet.tsv`:\n\n```\nid\tfile\ngenome1\t/path/to/genome/file.fastq.gz\ngenome2\thttps://url.example.com/to/genome/file.fastq.gz\n\u2026\n```\n\nNow, you can run the pipeline using:\n\n```bash\nnextflow run oist/luscombeu_stlpreprocess \\\n   -profile <docker/singularity/.../institute> \\\n   --input samplesheet.tsv \\\n   --outdir <OUTDIR>\n```\n\nThe `-r master` option selects the branch or version of the pipeline. Alternatives are `-r dev` for the latest version in development or version numbers such as `-r 3.0.0` for instance.\n\n> [!WARNING]\n> Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_; see [docs](https://nf-co.re/docs/usage/getting_started/configuration#custom-configuration-files).\n\n## Resource usage\n\n- On annelids, `assembly-scan` took a maximum of 2 GB memory. Filtering is now very lean, using less than 300 MB. All tasks completed in less than 40 min.\n\nUse the `--assemblyscan_memory` parameter to give more memory to `assembly-scan`. The\ndefault is `6.GB`. If not all the genomes are big, let the pipeline first\nprocess the small ones with default parameters, and then run it again with\n`-resume` and `--assemblyscan_memory`.\n\n## Pattern and exceptions\n\n- `v4.6`: `AP|BK|BX|CM|CP|CR|CU|FR|HE|HF|HG|L[R-T]|NC|NZ|O[U-Z]`\n- `v4.5`: `AP|BK|BX|CM|CP|CR|FR|HE|HF|HG|L[R-T]|NC|NZ|O[U-Z]`\n- `v4.4`: `AP|BX|CM|CP|FR|HG|L[R-T]|NC|NZ|O[U-Z]`.\n- `v4.2`: `AP|BX|CM|CP|FR|L[R-T]|NC|NZ|O[U-Z]`.\n- `v4.1`: `CM|CP|FR|L[R-T]|NC|NZ|O[U-Z]`.\n- `v1.1`: `CM|CP|FR|L[R-T]|O[U-Z]`.\n\nThe `v4.6` pattern matches complete chromosome\nscaffolds, plasmids and organelles almost exclusively. However there are exceptions.\n\n- _Drosophila melanogaster_'s `GCA_000001215` uses `AE` for chromosome scaffolds\n  and `CP` for `chrY` and unplaced scaffolds.\n- _Brassica rapa_'s `GCA_900412535.3` uses `LS` for chromosomes and `OV` for shotgun\n  scaffolds.\n- _Brassica oleracea_ `GCA_900416815`: `LS` / `OW`.\n- \\_Strongyloides_ratti_GCA_001040885`: has only `LN` for both chromosome and\n  unplaced scaffold sequences.\n- `AE` is rare and appears to be found only in chromosome sequences of old assemblies such as\n  `GCA_000001215.4` (_D. melanogaster_), `GCA_000008565.1` (_Deinococcus radiodurans_), or\n  `GCA_000008125.1` (_T. thermophilus_), or `GCA_000091025.4` (_Eremothecium gossypii_).\n  However it is also in unplaced sequences of `GCA_000309985.3` (_Brassica rapa_).\n  Altogether, is it better not to allow it?\n- Beware that some fish genomes also have `AP` in their unplaced scaffold names. You might\n  want to use `v4.1` in that case.\n- `FUGU5` uses `HE` for all if its sequences.\n- `FM` found at least in `Candida_dubliniensis_CD36_GCA_000026945.1`.\n- `FN` found at least in `Komagataella_phaffii_GS115_GCA_000027005.1`.\n- `DG` found at least in `Cyberlindnera_jadinii_NBRC_0988_GCA_000328385.1`\n\nTo find the names of the genomes where nothing was extracted, try:\n\n```\nbasename -s .patterns.txt *.patterns.txt | sed 's/$/.chromosomes_unmasked.fa.gz/' | xargs ls > /dev/null\n```\n\nTo check if a new pattern would be suitable, try:\n\n```\nfind . -name *patterns.txt | xargs grep -l AP | xargs head\n```\n\n## Credits\n\n`oist/luscombeu_stlpreprocess` was originally written by Charles Plessy with contributions of Takahiro Fujita.\n\n## Contributions and Support\n\nIf you would like to contribute to this pipeline, please see the [contributing guidelines](.github/CONTRIBUTING.md).\n\n## Citations\n\nAn extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.\n\nThis pipeline uses code and infrastructure developed and maintained by the [nf-core](https://nf-co.re) community, reused here under the [MIT license](https://github.com/nf-core/tools/blob/main/LICENSE).\n\n### [nf-core](https://pubmed.ncbi.nlm.nih.gov/32055031/)\n\n> **The nf-core framework for community-curated bioinformatics pipelines.**\n>\n> Philip Ewels, Alexander Peltzer, Sven Fillinger, Harshil Patel, Johannes Alneberg, Andreas Wilm, Maxime Ulysse Garcia, Paolo Di Tommaso & Sven Nahnsen.\n>\n> _Nat Biotechnol._ 2020 Feb 13. doi: [10.1038/s41587-020-0439-x](https://dx.doi.org/10.1038/s41587-020-0439-x).\n\n### [Nextflow](https://pubmed.ncbi.nlm.nih.gov/28398311/)\n\n> Di Tommaso P, Chatzou M, Floden EW, Barja PP, Palumbo E, Notredame C. Nextflow enables reproducible computational workflows. Nat Biotechnol. 2017 Apr 11;35(4):316-319. doi: 10.1038/nbt.3820. PubMed PMID: 28398311.\n\n### Pipeline tools\n\n- [Samtools](https://pubmed.ncbi.nlm.nih.gov/19505943/)\n\n  > Li H, Handsaker B, Wysoker A, Fennell T, Ruan J, Homer N, Marth G, Abecasis G, Durbin R; 1000 Genome Project Data Processing Subgroup. The Sequence Alignment/Map format and SAMtools. Bioinformatics. 2009 Aug 15;25(16):2078-9. doi: 10.1093/bioinformatics/btp352. Epub 2009 Jun 8. PMID: 19505943; PMCID: PMC2723002.\n\n- [MultiQC](https://pubmed.ncbi.nlm.nih.gov/27312411/)\n\n  > Ewels P, Magnusson M, Lundin S, K\u00e4ller M. MultiQC: summarize analysis results for multiple tools and samples in a single report. Bioinformatics. 2016 Oct 1;32(19):3047-8. doi: 10.1093/bioinformatics/btw354. Epub 2016 Jun 16. PubMed PMID: 27312411; PubMed Central PMCID: PMC5039924.\n\n### Software packaging/containerisation tools\n\n- [Anaconda](https://anaconda.com)\n\n  > Anaconda Software Distribution. Computer software. Vers. 2-2.4.0. Anaconda, Nov. 2016. Web.\n\n- [Bioconda](https://pubmed.ncbi.nlm.nih.gov/29967506/)\n\n  > Gr\u00fcning B, Dale R, Sj\u00f6din A, Chapman BA, Rowe J, Tomkins-Tinch CH, Valieris R, K\u00f6ster J; Bioconda Team. Bioconda: sustainable and comprehensive software distribution for the life sciences. Nat Methods. 2018 Jul;15(7):475-476. doi: 10.1038/s41592-018-0046-7. PubMed PMID: 29967506.\n\n- [BioContainers](https://pubmed.ncbi.nlm.nih.gov/28379341/)\n\n  > da Veiga Leprevost F, Gr\u00fcning B, Aflitos SA, R\u00f6st HL, Uszkoreit J, Barsnes H, Vaudel M, Moreno P, Gatto L, Weber J, Bai M, Jimenez RC, Sachsenberg T, Pfeuffer J, Alvarez RV, Griss J, Nesvizhskii AI, Perez-Riverol Y. BioContainers: an open-source and community-driven framework for software standardization. Bioinformatics. 2017 Aug 15;33(16):2580-2582. doi: 10.1093/bioinformatics/btx192. PubMed PMID: 28379341; PubMed Central PMCID: PMC5870671.\n\n- [Docker](https://dl.acm.org/doi/10.5555/2600239.2600241)\n\n  > Merkel, D. (2014). Docker: lightweight linux containers for consistent development and deployment. Linux Journal, 2014(239), 2. doi: 10.5555/2600239.2600241.\n\n- [Singularity](https://pubmed.ncbi.nlm.nih.gov/28494014/)\n\n  > Kurtzer GM, Sochat V, Bauer MW. Singularity: Scientific containers for mobility of compute. PLoS One. 2017 May 11;12(5):e0177459. doi: 10.1371/journal.pone.0177459. eCollection 2017. PubMed PMID: 28494014; PubMed Central PMCID: PMC5426675.\n",
             "hasPart": [
                 {
                     "@id": "main.nf"
@@ -39,6 +39,9 @@
                 },
                 {
                     "@id": "modules/"
+                },
+                {
+                    "@id": "modules/local/"
                 },
                 {
                     "@id": "modules/nf-core/"
@@ -86,17 +89,17 @@
                     "@id": ".prettierignore"
                 }
             ],
-            "isBasedOn": "https://github.com/oist/luscombeu_stlpreprocess",
+            "isBasedOn": "https://github.com/oist/LuscombeU_stlpreprocess",
             "license": "MIT",
             "mainEntity": {
                 "@id": "main.nf"
             },
             "mentions": [
                 {
-                    "@id": "#5b2d03f1-e11e-440c-92bd-a83a0819f1b6"
+                    "@id": "#96fe5b38-0565-474d-b973-643edac03e4f"
                 }
             ],
-            "name": "oist/luscombeu_stlpreprocess"
+            "name": "oist/LuscombeU_stlpreprocess"
         },
         {
             "@id": "ro-crate-metadata.json",
@@ -126,7 +129,7 @@
                 }
             ],
             "dateCreated": "",
-            "dateModified": "2026-02-26T11:18:23Z",
+            "dateModified": "2026-02-27T11:32:59Z",
             "dct:conformsTo": "https://bioschemas.org/profiles/ComputationalWorkflow/1.0-RELEASE/",
             "keywords": [
                 "nf-core",
@@ -141,7 +144,7 @@
                 }
             ],
             "name": [
-                "oist/luscombeu_stlpreprocess"
+                "oist/LuscombeU_stlpreprocess"
             ],
             "programmingLanguage": {
                 "@id": "https://w3id.org/workflowhub/workflow-ro-crate#nextflow"
@@ -150,8 +153,8 @@
                 "@id": "https://nf-co.re/"
             },
             "url": [
-                "https://github.com/oist/luscombeu_stlpreprocess",
-                "https://nf-co.re/oist/luscombeu_stlpreprocess/4.6.0/"
+                "https://github.com/oist/LuscombeU_stlpreprocess",
+                "https://nf-co.re/oist/LuscombeU_stlpreprocess/4.6.0/"
             ],
             "version": [
                 "4.6.0"
@@ -170,23 +173,23 @@
             "version": "!>=25.04.0"
         },
         {
-            "@id": "#5b2d03f1-e11e-440c-92bd-a83a0819f1b6",
+            "@id": "#96fe5b38-0565-474d-b973-643edac03e4f",
             "@type": "TestSuite",
             "instance": [
                 {
-                    "@id": "#98fe63f4-f20a-45e2-aa13-f8e965e90a98"
+                    "@id": "#1d683419-48ea-49ee-9a87-b031b117fe13"
                 }
             ],
             "mainEntity": {
                 "@id": "main.nf"
             },
-            "name": "Test suite for oist/luscombeu_stlpreprocess"
+            "name": "Test suite for oist/LuscombeU_stlpreprocess"
         },
         {
-            "@id": "#98fe63f4-f20a-45e2-aa13-f8e965e90a98",
+            "@id": "#1d683419-48ea-49ee-9a87-b031b117fe13",
             "@type": "TestInstance",
-            "name": "GitHub Actions workflow for testing oist/luscombeu_stlpreprocess",
-            "resource": "repos/oist/luscombeu_stlpreprocess/actions/workflows/nf-test.yml",
+            "name": "GitHub Actions workflow for testing oist/LuscombeU_stlpreprocess",
+            "resource": "repos/oist/LuscombeU_stlpreprocess/actions/workflows/nf-test.yml",
             "runsOn": {
                 "@id": "https://w3id.org/ro/terms/test#GithubService"
             },
@@ -219,6 +222,11 @@
             "@id": "modules/",
             "@type": "Dataset",
             "description": "Modules used by the pipeline"
+        },
+        {
+            "@id": "modules/local/",
+            "@type": "Dataset",
+            "description": "Pipeline-specific modules"
         },
         {
             "@id": "modules/nf-core/",

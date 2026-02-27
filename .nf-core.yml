@@ -24,7 +24,7 @@ lint:
 nf_core_version: 3.5.2
 repository_type: pipeline
 template:
-  author: Charles Plessy, Mohammed Mahdi, Takahiro Fujita
+  author: Charles Plessy, Takahiro Fujita
   description: Download and pre-process genomes for the Scrambling in the Tree of
     Life project
   force: false
