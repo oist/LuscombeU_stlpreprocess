@@ -225,6 +225,9 @@
     },
     "allOf": [
         {
+            "$ref": "#/$defs/max_job_request_options"
+        },
+        {
             "$ref": "#/$defs/input_output_options"
         },
         {
