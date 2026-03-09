@@ -90,6 +90,21 @@
             "$ref": "#/$defs/input_output_options"
         },
         {
+            "$ref": "#/$defs/indexing_options"
+        },
+        {
+            "$ref": "#/$defs/alignment_options"
+        },
+        {
+            "$ref": "#/$defs/dotplot_parameters"
+        },
+        {
+            "$ref": "#/$defs/reference_genome_options"
+        },
+        {
+            "$ref": "#/$defs/institutional_config_options"
+        },
+        {
             "$ref": "#/$defs/generic_options"
         }
     ]
