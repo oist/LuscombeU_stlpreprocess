@@ -5,7 +5,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## v4.7.1 - July 13th, 2026 (In twentysis)
 
- - Update to nf-core template 4.0.2, compatible with Nextflow 26.04.
+- Update to nf-core template 4.0.2, compatible with Nextflow 26.04.
 
 ## v4.7.0 - Feburary 25th, 2026 (In Camellia sinensis)
 
