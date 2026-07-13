@@ -21,7 +21,7 @@ lint:
     - manifest.homePage
   readme:
     - nextflow_badge
-nf_core_version: 3.5.2
+nf_core_version: 4.0.2
 repository_type: pipeline
 template:
   author: Charles Plessy, Takahiro Fujita
